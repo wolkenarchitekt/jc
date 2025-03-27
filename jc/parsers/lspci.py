@@ -4,6 +4,7 @@ This parser supports the following `lspci` options:
 - `-mmv`
 - `-nmmv`
 - `-nnmmv`
+- `-nnmmvk`
 
 Usage (cli):
 
@@ -192,6 +193,8 @@ def parse(
         item_id_bracket_p = re.compile(r' \[(?P<id>[0-9a-f]{4})\]$')
 
         for line in filter(None, data.splitlines()):
+            if line.startswith('Driver:'):
+                device_output['driver'] = line.split()[1]
             if line.startswith('Slot:'):
                 if device_output:
                     raw_output.append(device_output)
